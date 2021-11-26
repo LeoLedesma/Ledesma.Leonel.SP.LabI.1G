@@ -12,29 +12,29 @@
 int controller_loadFromText(LinkedList* listaMovies)
 {
 
-    int todoOk = 0;
+	int todoOk = 0;
 
-    char path[20];
+	char path[20];
 
 
-    utn_getString(path, 20, "Por favor, ingrese el nombre del archivo (sin extension): ", "ERROR. ingrese un nombre valido: ", 10);
-    strcat(path, ".csv");
+	utn_getString(path, 20, "Por favor, ingrese el nombre del archivo (sin extension): ", "ERROR. ingrese un nombre valido: ", 10);
+	strcat(path, ".csv");
 
-    FILE* fPath = fopen(path, "r");
+	FILE* fPath = fopen(path, "r");
 
-    if (fPath != NULL && listaMovies!=NULL)
-    {
-        parser_MovieFromText(fPath, listaMovies);
-        fclose(fPath);
-        fPath = NULL;
-        todoOk = 1;
+	if (fPath != NULL && listaMovies!=NULL)
+	{
+		parser_MovieFromText(fPath, listaMovies);
+		fclose(fPath);
+		fPath = NULL;
+		todoOk = 1;
 
-    } else {
-       printf("El archivo no se pudo abrir o no existe\n");
-       todoOk = 0;
-    }
+	} else {
+		printf("El archivo no se pudo abrir o no existe\n");
+		todoOk = 0;
+	}
 
-    return todoOk;
+	return todoOk;
 }
 
 
@@ -96,9 +96,9 @@ void controller_imprimirUnaMovie(eMovie* unaMovie)
 	float rating;
 
 	if (unaMovie != NULL && movie_getId(unaMovie, &id)
-					&& movie_getTitulo(unaMovie, titulo)
-					&& movie_getGenero(unaMovie, genero)
-					&& movie_getRating(unaMovie, &rating))
+	&& movie_getTitulo(unaMovie, titulo)
+	&& movie_getGenero(unaMovie, genero)
+	&& movie_getRating(unaMovie, &rating))
 	{
 
 		printf("%-4d      %-30s      %-15s        %.1f  \n", id, titulo,genero, rating);
@@ -135,14 +135,14 @@ int controller_imprimirMovies(LinkedList* lista){
 LinkedList* controller_asignarRatings(LinkedList* lista)
 {
 	LinkedList* pListaMapeada = NULL;
-		void* (*funcion)(void*);
+	void* (*funcion)(void*);
 
-		if(lista!=NULL)
-		{
-			funcion = movie_asignarRatingAleatorio;
-			pListaMapeada = ll_map(lista, funcion);
+	if(lista!=NULL)
+	{
+		funcion = movie_asignarRatingAleatorio;
+		pListaMapeada = ll_map(lista, funcion);
 
-		}
+	}
 
 
 	return pListaMapeada;
@@ -151,113 +151,101 @@ LinkedList* controller_asignarRatings(LinkedList* lista)
 LinkedList* controller_asignarGeneros(LinkedList* lista)
 {
 	LinkedList* pListaMapeada = NULL;
-			void* (*funcion)(void*);
+	void* (*funcion)(void*);
 
-			if(lista!=NULL)
-			{
-				funcion = movie_asignarGeneroAleatorio;
-				pListaMapeada = ll_map(lista, funcion);
+	if(lista!=NULL)
+	{
+		funcion = movie_asignarGeneroAleatorio;
+		pListaMapeada = ll_map(lista, funcion);
 
-			}
-
-
-		return pListaMapeada;
 	}
 
 
-
-LinkedList* controller_filtrarPorTipo(LinkedList* lista)
-{
-	LinkedList* pListaFiltrada = NULL;
-	char generoSeleccionado[40];
-
-	movie_pedirGenero(lista, generoSeleccionado);
-
-	return pListaFiltrada;
+	return pListaMapeada;
 }
 
 int controller_filtrarPorGenero(LinkedList* lista)
 {
-    int todoOk = 0;
-    int (*pFiltrarGenero)(void*);
-    char path[30];
+	int todoOk = 0;
+	int (*pFiltrarGenero)(void*);
+	char path[30];
 
 
-    LinkedList* newList = NULL;
+	LinkedList* newList = NULL;
 
-    int idGenero;
-    int flag = 0;
+	int idGenero;
+	int flag = 0;
 
-    if (lista != NULL)
-    {
-
-
-        //pido genero
-        idGenero = menuGeneros();
-
-        switch (idGenero) {
-        case 1://drama
-            pFiltrarGenero = movie_filtrarDrama;
-            flag = 1;
-            break;
-
-        case 2://comedia
-            pFiltrarGenero = movie_filtrarComedia;
-            flag = 1;
-            break;
-
-        case 3://accion
-            pFiltrarGenero = movie_filtrarAccion;
-            flag = 1;
-            break;
-
-        case 4://terror
-            pFiltrarGenero = movie_filtrarTerror;
-            flag = 1;
-            break;
-        default://invalido
-        	printf("Ingreso una opcion invalida. Vuelva a intentarlo.\n");
-            break;
-        }
-
-    }
-
-    //filtro
-    if (flag){
-
-        newList = ll_filter(lista, pFiltrarGenero);
-        printf("llegue");
-
-        if(newList!=NULL)
-        {
-        	if(ll_len(newList)>0)
-        	{
-
-        	controller_imprimirMovies(newList);
-
-        	utn_getString(path, 30, "Por favor, ingrese el nombre con el que desea guardar el archivo: ", "ERROR. Por favor, ingrese el nombre con el que desea guardar el archivo: ", 9);
-        	strcat(path, ".csv");
-        	controller_saveAsText(path, newList);
-
-        	}
-        	else{
-        		printf("No hay peliculas del genero seleccionado.\n");
-        	}
-
-        }
-        else
-        {
-        	printf("Ocurrio un error. Por favor intente nuevamente.\n");
-        }
+	if (lista != NULL)
+	{
 
 
+		//pido genero
+		idGenero = menuGeneros();
 
-        todoOk = 1;
-    }
+		switch (idGenero) {
+		case 1://drama
+			pFiltrarGenero = movie_filtrarDrama;
+			flag = 1;
+			break;
+
+		case 2://comedia
+			pFiltrarGenero = movie_filtrarComedia;
+			flag = 1;
+			break;
+
+		case 3://accion
+			pFiltrarGenero = movie_filtrarAccion;
+			flag = 1;
+			break;
+
+		case 4://terror
+			pFiltrarGenero = movie_filtrarTerror;
+			flag = 1;
+			break;
+		default://invalido
+			printf("Ingreso una opcion invalida. Vuelva a intentarlo.\n");
+			break;
+		}
+
+	}
+
+	//filtro
+	if (flag){
+
+		newList = ll_filter(lista, pFiltrarGenero);
+		printf("llegue");
+
+		if(newList!=NULL)
+		{
+			if(ll_len(newList)>0)
+			{
+
+				controller_imprimirMovies(newList);
+
+				utn_getString(path, 30, "Por favor, ingrese el nombre con el que desea guardar el archivo: ", "ERROR. Por favor, ingrese el nombre con el que desea guardar el archivo: ", 9);
+				strcat(path, ".csv");
+				controller_saveAsText(path, newList);
+
+			}
+			else{
+				printf("No hay peliculas del genero seleccionado.\n");
+			}
+
+		}
+		else
+		{
+			printf("Ocurrio un error. Por favor intente nuevamente.\n");
+		}
 
 
 
-    return todoOk;
+		todoOk = 1;
+	}
+
+
+
+	return todoOk;
 }
 
 LinkedList* controller_ordenar(LinkedList* lista)
@@ -273,66 +261,18 @@ LinkedList* controller_ordenar(LinkedList* lista)
 
 
 		if(lista!=NULL)
-				{
+		{
 
-					pOrdenarMovies = movie_ordenarMovies;
-					ll_sort(listaOrdenada, pOrdenarMovies, 1);
+			pOrdenarMovies = movie_ordenarMovies;
+			ll_sort(listaOrdenada, pOrdenarMovies, 1);
 
-					controller_imprimirMovies(listaOrdenada);
+			controller_imprimirMovies(listaOrdenada);
 
-				}
+		}
 
 	}
 
 	return listaOrdenada;
 }
-
-
-
-
-/*LinkedList* controller_clonarLista(LinkedList* lista)
-{
-	LinkedList* listaClonada = ll_newLinkedList();
-	ePeli* auxPeli = (ePeli*) malloc(sizeof(ePeli));
-	ePeli* unaPeli=NULL;
-
-	auxPeli = NULL;
-
-	int id;
-	char titulo[40];
-	char genero[20];
-	int duracion;
-	int tam;
-
-
-
-	if(auxPeli!=NULL && listaClonada!=NULL && lista!=NULL)
-	{
-		tam=ll_len(lista);
-
-		for(int i=0; i<tam; i++)
-		{
-			unaPeli = ll_get(lista, i);
-
-			unaPeli = (ePeli*) unaPeli;
-
-			movie_getId(unaPeli, &id);
-			movie_getTitulo(unaPeli, titulo);
-			movie_getGenero(unaPeli, genero);
-			movie_getDuracion(unaPeli, &duracion);
-
-			movie_setId(auxPeli, id);
-			movie_setTitulo(auxPeli, titulo);
-			movie_setGenero(auxPeli, genero);
-			movie_setDuracion(auxPeli, duracion);
-
-			ll_add(listaClonada, auxPeli);
-		}
-
-	}
-
-	return listaClonada;
-}*/
-
 
 

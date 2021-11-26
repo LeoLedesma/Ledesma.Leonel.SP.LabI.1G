@@ -41,170 +41,170 @@ int menuPrincipal(LinkedList* listaMovies)
 
 
 	if (listaMovies != NULL)
+	{
+		do
 		{
-			do
+			option = elegirOpcionMenuPrincipal();
+			switch (option)
 			{
-				option = elegirOpcionMenuPrincipal();
-				switch (option)
+			case 1: //cargar
+				if(!flagLoad)
 				{
-				case 1: //cargar
-					if(!flagLoad)
+					if(controller_loadFromText(listaMovies))
 					{
-						if(controller_loadFromText(listaMovies))
-						{
-							flagLoad=1;
-							printf("Archivo cargado con exito!\n");
-						}
-					}else
-					{
-						printf("Los datos ya se han cargado!.\n");
+						flagLoad=1;
+						printf("Archivo cargado con exito!\n");
 					}
-
-					break;
-				case 2: //imprimir lista
-
-					if(flagLoad)
-					{
-						controller_imprimirMovies(listaMovies);
-					}else
-					{
-						printf("Primero debe cargar el archivo para mostrarlo.!\n");
-					}
-					break;
-				case 3: //Asignar rating
-					if(flagMapRating)
-					{
-						printf("Ya han sido cargados los ratings con anterioridad.!\n");
-					}else
-					{
-						if(flagLoad)
-						{
-							listaMapeada = controller_asignarRatings(listaMovies);
-
-							if(listaMapeada!=NULL)
-							{
-								printf("Ratings asignados con exito!!\n\n");
-
-								controller_imprimirMovies(listaMovies);
-								flagMapRating = 1;
-							}
-						}else
-						{
-							printf("Primero debe cargar la lista!\n");
-						}
-					}
-
-					break;
-				case 4: //Asignar genero
-					if(flagMapGenero)
-					{
-						printf("Primero debe cargar el archivo para mostrarlo.!\n");
-					}else
-					{
-						if(flagLoad)
-						{
-							listaMapeada = controller_asignarGeneros(listaMovies);
-
-							if(listaMapeada!=NULL)
-							{
-								printf("Generos asignados con exito!!\n\n");
-
-								controller_imprimirMovies(listaMovies);
-								flagMapGenero = 1;
-							}
-						}else
-						{
-							printf("Primero debe cargar la lista!\n");
-						}
-					}
-
-
-					break;
-
-				case 5: //filtra por genero
-
-					if(flagMapGenero && flagMapRating)
-					{
-						controller_filtrarPorGenero(listaMovies);
-					}else
-					{
-						printf("Primero debe cargar los ratings en la lista!\n");
-					}
-
-					break;
-				case 6: //ordenar por genero y rating descendente
-
-					if(flagMapGenero && flagMapRating)
-					{
-						listaClonada = controller_ordenar(listaMapeada);
-
-						if(listaClonada!=NULL)
-						{
-							flagSort = 1;
-						}
-
-					}else
-					{
-						printf("Primero debe cargar los ratings en la lista!\n");
-					}
-
-					break;
-				case 7: //guardar peliculas
-					if(flagSort)
-					{
-						utn_getString(path, 30, "Por favor, ingrese el nombre con el que desea guardar el archivo: ", "ERROR. Por favor, ingrese el nombre con el que desea guardar el archivo: ", 9);
-						strcat(path, ".csv");
-						controller_saveAsText(path, listaClonada);
-						flagSave = 1;
-					}
-
-					break;
-
-				case 8: //salir
-					system("cls");
-					if(flagSave)
-					printf("ALERTA!!!   ALERTA!!!   ALERTA!!!\n");
-					printf("Esta queriendo salir sin guardar los cambios. \n");
-
-
-					salir = getConfirmation("Esta seguro que desea salir? (s/n): ",
-							"ERROR. Esta seguro que desea salir? (s/n): ");
-
-					break;
-				default:
-					printf("Ingreso una opcion invalida. Vuelva a intentarlo.\n");
-					break;
+				}else
+				{
+					printf("Los datos ya se han cargado!.\n");
 				}
 
-				printf("Presione una tecla para continuar...\n");
-				fflush(stdin);
-				getchar();
-				//system("pause"); //Rompe el pedido de opcion en consola de eclipse.
-			} while (salir == 'n');
+				break;
+			case 2: //imprimir lista
 
-			todoOk=1;
-		}
+				if(flagLoad)
+				{
+					controller_imprimirMovies(listaMovies);
+				}else
+				{
+					printf("Primero debe cargar el archivo para mostrarlo.!\n");
+				}
+				break;
+			case 3: //Asignar rating
+				if(flagMapRating)
+				{
+					printf("Ya han sido cargados los ratings con anterioridad.!\n");
+				}else
+				{
+					if(flagLoad)
+					{
+						listaMapeada = controller_asignarRatings(listaMovies);
+
+						if(listaMapeada!=NULL)
+						{
+							printf("Ratings asignados con exito!!\n\n");
+
+							controller_imprimirMovies(listaMovies);
+							flagMapRating = 1;
+						}
+					}else
+					{
+						printf("Primero debe cargar la lista!\n");
+					}
+				}
+
+				break;
+			case 4: //Asignar genero
+				if(flagMapGenero)
+				{
+					printf("Primero debe cargar el archivo para mostrarlo.!\n");
+				}else
+				{
+					if(flagLoad)
+					{
+						listaMapeada = controller_asignarGeneros(listaMovies);
+
+						if(listaMapeada!=NULL)
+						{
+							printf("Generos asignados con exito!!\n\n");
+
+							controller_imprimirMovies(listaMovies);
+							flagMapGenero = 1;
+						}
+					}else
+					{
+						printf("Primero debe cargar la lista!\n");
+					}
+				}
+
+
+				break;
+
+			case 5: //filtra por genero
+
+				if(flagMapGenero && flagMapRating)
+				{
+					controller_filtrarPorGenero(listaMovies);
+				}else
+				{
+					printf("Primero debe cargar los ratings en la lista!\n");
+				}
+
+				break;
+			case 6: //ordenar por genero y rating descendente
+
+				if(flagMapGenero && flagMapRating)
+				{
+					listaClonada = controller_ordenar(listaMapeada);
+
+					if(listaClonada!=NULL)
+					{
+						flagSort = 1;
+					}
+
+				}else
+				{
+					printf("Primero debe cargar los ratings en la lista!\n");
+				}
+
+				break;
+			case 7: //guardar peliculas
+				if(flagSort)
+				{
+					utn_getString(path, 30, "Por favor, ingrese el nombre con el que desea guardar el archivo: ", "ERROR. Por favor, ingrese el nombre con el que desea guardar el archivo: ", 9);
+					strcat(path, ".csv");
+					controller_saveAsText(path, listaClonada);
+					flagSave = 1;
+				}
+
+				break;
+
+			case 8: //salir
+				system("cls");
+				if(flagSave)
+					printf("ALERTA!!!   ALERTA!!!   ALERTA!!!\n");
+				printf("Esta queriendo salir sin guardar los cambios. \n");
+
+
+				salir = getConfirmation("Esta seguro que desea salir? (s/n): ",
+						"ERROR. Esta seguro que desea salir? (s/n): ");
+
+				break;
+			default:
+				printf("Ingreso una opcion invalida. Vuelva a intentarlo.\n");
+				break;
+			}
+
+			printf("Presione una tecla para continuar...\n");
+			fflush(stdin);
+			getchar();
+			//system("pause"); //Rompe el pedido de opcion en consola de eclipse.
+		} while (salir == 'n');
+
+		todoOk=1;
+	}
 
 	ll_deleteLinkedList(listaMapeada);
 
-		return todoOk;
-	}
+	return todoOk;
+}
 
 int menuGeneros(){
-    int opcion;
+	int opcion;
 
-    system("cls");
-    printf("---------------------------------------\n");
-    printf("      Generos existentes        \n");
-    printf("---------------------------------------\n");
-    printf("1. Drama\n");
-    printf("2. Comedia\n");
-    printf("3. Accion\n");
-    printf("4. Terror\n");
+	system("cls");
+	printf("---------------------------------------\n");
+	printf("      Generos existentes        \n");
+	printf("---------------------------------------\n");
+	printf("1. Drama\n");
+	printf("2. Comedia\n");
+	printf("3. Accion\n");
+	printf("4. Terror\n");
 
-    getInt("Por favor ingrese el ID del genero que desea: ", "Por favor ingrese el ID del genero que desea: ", &opcion);
+	getInt("Por favor ingrese el ID del genero que desea: ", "Por favor ingrese el ID del genero que desea: ", &opcion);
 
-    return opcion;
+	return opcion;
 }
 
 
